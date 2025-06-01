@@ -1,17 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Cubit to manage arithmetic operations.
 class ArithmeticCubit extends Cubit<int> {
-  ArithmeticCubit() : super(101);
+  ArithmeticCubit() : super(0);
 
-  void add(int firstNumber, int secondNumber) {
-    emit(firstNumber + secondNumber);
-  }
+  void add(int a, int b) => emit(a + b);
 
-  void subtract(int firstNumber, int secondNumber) {
-    emit(firstNumber - secondNumber);
-  }
+  void subtract(int a, int b) => emit(a - b);
 
-  void multiply(int firstNumber, int secondNumber) {
-    emit(firstNumber * secondNumber);
-  }
+  void multiply(int a, int b) => emit(a * b);
 }
