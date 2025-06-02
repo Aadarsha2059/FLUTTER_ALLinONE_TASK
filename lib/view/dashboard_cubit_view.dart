@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:allinone/cubit/arithmetic_cubit.dart';
+import 'package:allinone/view/arithmetic_bloc_view.dart';
 import 'package:allinone/view/arithmetic_cubit_view.dart';
 import 'package:allinone/cubit/counter_cubit.dart';
 import 'package:allinone/view/counter_cubit_view.dart';
@@ -14,11 +15,13 @@ class DashboardCubit extends Cubit<void> {
   final ArithmeticCubit arithmeticCubit;
   final StudentCubit studentCubit;
   final CounterCubit counterCubit;
+  final ArithmeticBlocView arithmeticBlocView;
 
   DashboardCubit(
     this.arithmeticCubit,
     this.studentCubit,
     this.counterCubit,
+    this.arithmeticBlocView,
   ) : super(null);
 
   void onArithmeticCubitTap(BuildContext context) {
@@ -26,7 +29,7 @@ class DashboardCubit extends Cubit<void> {
       MaterialPageRoute(
         builder: (_) => BlocProvider.value(
           value: arithmeticCubit,
-          child:  ArithmeticCubitView(),
+          child: ArithmeticCubitView(),
         ),
       ),
     );
@@ -48,14 +51,22 @@ class DashboardCubit extends Cubit<void> {
       MaterialPageRoute(
         builder: (_) => BlocProvider.value(
           value: studentCubit,
-          child:  StudentCubitView(),
+          child: StudentCubitView(),
         ),
+      ),
+    );
+  }
+
+  void onArithmeticBlocView(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => arithmeticBlocView,
       ),
     );
   }
 }
 
-/// DashboardView displays three operation cards and navigates to respective views
+/// DashboardView displays three operation cards
 class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
 
@@ -66,42 +77,47 @@ class DashboardView extends StatelessWidget {
         BlocProvider<ArithmeticCubit>(create: (_) => ArithmeticCubit()),
         BlocProvider<StudentCubit>(create: (_) => StudentCubit()),
         BlocProvider<CounterCubit>(create: (_) => CounterCubit()),
-        BlocProvider<DashboardCubit>(
-          create: (context) => DashboardCubit(
-            context.read<ArithmeticCubit>(),
-            context.read<StudentCubit>(),
-            context.read<CounterCubit>(),
-          ),
-        ),
       ],
       child: Builder(
         builder: (context) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Dashboard'),
-              centerTitle: true,
+          return BlocProvider<DashboardCubit>(
+            create: (_) => DashboardCubit(
+              context.read<ArithmeticCubit>(),
+              context.read<StudentCubit>(),
+              context.read<CounterCubit>(),
+              ArithmeticBlocView(), // Pass your view here
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: GridView.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                childAspectRatio: 1.2,
-                children: [
-                  operationCard(
-                    title: 'Counter',
-                    onTap: () => context.read<DashboardCubit>().onCounterCubitTap(context),
-                  ),
-                  operationCard(
-                    title: 'Arithmetic Operations',
-                    onTap: () => context.read<DashboardCubit>().onArithmeticCubitTap(context),
-                  ),
-                  operationCard(
-                    title: 'Student List',
-                    onTap: () => context.read<DashboardCubit>().onStudentCubitTap(context),
-                  ),
-                ],
+            child: Scaffold(
+              appBar: AppBar(
+                title: const Text('Dashboard'),
+                centerTitle: true,
+              ),
+              body: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 12,
+                  crossAxisSpacing: 12,
+                  childAspectRatio: 1.2,
+                  children: [
+                    operationCard(
+                      title: 'Counter',
+                      onTap: () => context.read<DashboardCubit>().onCounterCubitTap(context),
+                    ),
+                    operationCard(
+                      title: 'Arithmetic Operations',
+                      onTap: () => context.read<DashboardCubit>().onArithmeticCubitTap(context),
+                    ),
+                    operationCard(
+                      title: 'Student List',
+                      onTap: () => context.read<DashboardCubit>().onStudentCubitTap(context),
+                    ),
+                    operationCard(
+                      title: 'Arithmetic Bloc',
+                      onTap: () => context.read<DashboardCubit>().onArithmeticBlocView(context),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
@@ -116,17 +132,12 @@ class DashboardView extends StatelessWidget {
       onTap: onTap,
       child: Card(
         elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Center(
           child: Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-            ),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
         ),
       ),

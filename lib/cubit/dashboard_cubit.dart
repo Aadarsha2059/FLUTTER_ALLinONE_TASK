@@ -1,11 +1,10 @@
-
-
 import 'package:allinone/cubit/arithmetic_cubit.dart';
 import 'package:allinone/cubit/counter_cubit.dart';
 import 'package:allinone/cubit/student_cubit.dart';
 import 'package:allinone/view/arithmetic_cubit_view.dart';
 import 'package:allinone/view/counter_cubit_view.dart';
 import 'package:allinone/view/student_cubit_view.dart';
+import 'package:allinone/view/arithmetic_bloc_view.dart'; // Import Bloc view
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,10 +22,11 @@ class DashboardCubit extends Cubit<void> {
   void onArithmeticCubitTap(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => BlocProvider.value(
-          value: arithmeticCubit,
-          child: ArithmeticCubitView(),
-        ),
+        builder:
+            (_) => BlocProvider.value(
+              value: arithmeticCubit,
+              child: ArithmeticCubitView(),
+            ),
       ),
     );
   }
@@ -34,10 +34,11 @@ class DashboardCubit extends Cubit<void> {
   void onCounterCubitTap(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => BlocProvider.value(
-          value: counterCubit,
-          child: const CounterCubitView(),
-        ),
+        builder:
+            (_) => BlocProvider.value(
+              value: counterCubit,
+              child: const CounterCubitView(),
+            ),
       ),
     );
   }
@@ -45,10 +46,11 @@ class DashboardCubit extends Cubit<void> {
   void onStudentCubitTap(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => BlocProvider.value(
-          value: studentCubit,
-          child: StudentCubitView(),
-        ),
+        builder:
+            (_) => BlocProvider.value(
+              value: studentCubit,
+              child: StudentCubitView(),
+            ),
       ),
     );
   }
